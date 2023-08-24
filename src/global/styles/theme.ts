@@ -25,7 +25,7 @@ export default {
         normal: '#9DA0AA',
         bug: '#8CB330',
         flying: '#748FC9',
-        eletric: '#F2CB55',
+        eletric: '#EED535',
         ground: '#F78551',
       },
     },
