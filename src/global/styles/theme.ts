@@ -4,6 +4,7 @@ export default {
       text: '#050617',
       light_text: 'rgba(23, 23, 27, 0.6)',
       detail: '#747476',
+      text_white: '#fff',
   
       backgroundCard: {
         grass: '#8BBE8A',

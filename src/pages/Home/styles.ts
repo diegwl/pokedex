@@ -4,6 +4,7 @@ export const Container = styled.View`
     ${({theme}) => css`
         flex: 1;
         background-color: ${theme.colors.background};
+        padding: 20px;
     `};
 `;
 
@@ -48,7 +49,7 @@ export const WrapperImage = styled.View`
 export const Title = styled.Text`
     ${({theme}) => css`
         font-size: 40px;
-        color: ${theme.colors.text}
+        color: ${theme.colors.text_white}
         margin-top: 20px;
     `};
 `;
@@ -57,6 +58,6 @@ export const Subtitle = styled.Text`
     ${({theme}) => css`
         font-size: 16px;
         margin-top: 20px;
-        color: ${theme.colors.text}
+        color: ${theme.colors.text_white}
     `};
 `;
