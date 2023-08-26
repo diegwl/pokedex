@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Content, Footer, Title, Subtitle, WrapperAnimation, WrapperImage } from './styles';
+import { Container, Title, Header, LoadingScreen } from './styles';
 import api from '../../service/api';
-import { FlatList, Text } from 'react-native';
+import { FlatList, Alert } from 'react-native';
 import { Card } from '../../components/Card';
 import { PokemonType, Pokemon } from '../../components/Card';
+import pokeballHeader from '../../assets/img/pokeball.png';
+import { useNavigation } from '@react-navigation/native';
+import { Load } from '../../components/Load';
 
 type Request = {
     id: number
@@ -11,27 +14,39 @@ type Request = {
 }
 
 export function Home() {
-
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+    const [load, setLoad] = useState<boolean>(true);
+
+    const {navigate} = useNavigation();
+    
+    function handleNavigation(pokemonId: number) {
+        navigate('About', {pokemonId});
+      }
 
     useEffect(() => {
         async function getAllPokemons() {
-            const response = await api.get('/pokemon');
-            const { results } = response.data;
+            try{
+                const response = await api.get('/pokemon');
+                const { results } = response.data;
 
-            const payloadPokemons = await Promise.all(
-                results.map(async (pokemon: Pokemon) => {
-                    const {id, types} = await getMoreInfo(pokemon.url)
+                const payloadPokemons = await Promise.all(
+                    results.map(async (pokemon: Pokemon) => {
+                        const {id, types} = await getMoreInfo(pokemon.url)
 
-                    return {
-                        name: pokemon.name,
-                        id,
-                        types
-                    }
-                })
-            );
+                        return {
+                            name: pokemon.name,
+                            id,
+                            types
+                        }
+                    })
+                );
 
-            setPokemons(payloadPokemons);
+                setPokemons(payloadPokemons);
+            } catch (err) {
+                Alert.alert('ops, algo de errado aconteceu, tente mais tarde');
+            } finally {
+                setLoad(false);
+            } 
         }
 
         getAllPokemons();
@@ -46,13 +61,26 @@ export function Home() {
         };
     };
 
-    return (
+    return load ? (
+        <LoadingScreen>
+            <Load />
+        </LoadingScreen>
+    ) : (
         <Container>
             <FlatList 
+            ListHeaderComponent={
+                <>
+                    <Header source={pokeballHeader} />
+                    <Title>Pokédex</Title>
+                </>
+            }
+            contentContainerStyle={{paddingHorizontal: 20}}
             data={pokemons}
             keyExtractor={pokemon => pokemon.id.toString()}
             renderItem={({item: pokemon}) => (
-                <Card data={pokemon}/>
+                <Card data={pokemon} onPress={() => {
+                    handleNavigation(pokemon.id)
+                }}/>
                 )}
             />
         </Container>

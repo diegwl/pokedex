@@ -29,7 +29,7 @@ export const WrapperAnimation = styled.View`
     ${({theme}) => css`
         width: 200px;
         height: 300px;
-        background-color: ${theme.colors.boxType.eletric};
+        background-color: ${theme.colors.backgroundCard.eletric};
         justify-content:center;
         align-items: center;
         border-radius: 100px;

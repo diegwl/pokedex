@@ -15,6 +15,7 @@ import {
     PokeballDetail,
 } from './styles'
 import { TouchableOpacityProps } from 'react-native';
+import { FadeAnimation } from '../FadeAnimation';
 
 export type PokemonType = {
     type: {
@@ -51,14 +52,17 @@ export function Card({data, ...rest}: Props) {
                     )}
                     
                 </PokemonContentType>
-
             </LeftSide>
+
             <RightSide>
                 <PokeballDetail source={pokeball} />
+                <FadeAnimation>
                 <PokemonImage source={{
                     uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`,
                 }} />
+                </FadeAnimation>
             </RightSide>
+            
         </PokemonCard>
     )
 }
