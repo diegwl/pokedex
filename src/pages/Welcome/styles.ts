@@ -3,7 +3,7 @@ import styled, { css } from "styled-components/native";
 export const Container = styled.View`
     ${({theme}) => css`
         flex: 1;
-        background-color: ${theme.colors.backgroundCard.eletric};
+        background-color: ${theme.colors.backgroundCard.electric};
     `};
 `;
 
@@ -29,7 +29,7 @@ export const WrapperAnimation = styled.View`
     ${({theme}) => css`
         width: 200px;
         height: 300px;
-        background-color: ${theme.colors.backgroundCard.eletric};
+        background-color: ${theme.colors.backgroundCard.electric};
         justify-content:center;
         align-items: center;
         border-radius: 100px;
@@ -48,7 +48,7 @@ export const WrapperImage = styled.View`
 export const Title = styled.Text`
     ${({theme}) => css`
         font-size: 40px;
-        color: ${theme.colors.text}
+        color: ${theme.colors.text_white}
         margin-top: 20px;
     `};
 `;
@@ -57,6 +57,6 @@ export const Subtitle = styled.Text`
     ${({theme}) => css`
         font-size: 16px;
         margin-top: 20px;
-        color: ${theme.colors.text}
+        color: ${theme.colors.text_white}
     `};
 `;

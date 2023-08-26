@@ -7,6 +7,7 @@ import { PokemonType, Pokemon } from '../../components/Card';
 import pokeballHeader from '../../assets/img/pokeball.png';
 import { useNavigation } from '@react-navigation/native';
 import { Load } from '../../components/Load';
+import axios from 'axios';
 
 type Request = {
     id: number
@@ -16,6 +17,8 @@ type Request = {
 export function Home() {
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [load, setLoad] = useState<boolean>(true);
+    const [nextPage, setNextPage] = useState<string>('');
+    const [fotterLoad, setFooterLoad] = useState<boolean>(false)
 
     const {navigate} = useNavigation();
     
@@ -26,8 +29,10 @@ export function Home() {
     useEffect(() => {
         async function getAllPokemons() {
             try{
-                const response = await api.get('/pokemon');
-                const { results } = response.data;
+                const response = await api.get('/pokemon?offset=0&limit=100');
+                const { results, next } = response.data;
+
+                setNextPage(next);
 
                 const payloadPokemons = await Promise.all(
                     results.map(async (pokemon: Pokemon) => {
@@ -51,6 +56,31 @@ export function Home() {
 
         getAllPokemons();
     }, []);
+
+    async function getNextPokemons() {
+        try{
+            const response = await axios.get(nextPage);
+            const { results, next } = response.data;
+
+            setNextPage(next);
+
+            const payloadPokemons = await Promise.all(
+                results.map(async (pokemon: Pokemon) => {
+                    const {id, types} = await getMoreInfo(pokemon.url)
+
+                    return {
+                        name: pokemon.name,
+                        id,
+                        types
+                    }
+                })
+            );
+
+            setPokemons([...pokemons, ...payloadPokemons]);
+        } catch (err) {
+            Alert.alert('ops, algo de errado aconteceu, tente mais tarde');
+        }
+    }
 
     async function getMoreInfo(url: string): Promise<Request> {
         const response = await api.get(url);
@@ -82,6 +112,10 @@ export function Home() {
                     handleNavigation(pokemon.id)
                 }}/>
                 )}
+            onEndReached={getNextPokemons}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={<Load /> }
+            showsVerticalScrollIndicator={false}
             />
         </Container>
     )

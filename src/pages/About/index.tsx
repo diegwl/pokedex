@@ -34,8 +34,17 @@ type TypeName =  | 'grass'
 | 'normal'
 | 'bug'
 | 'flying'
-| 'eletric'
-| 'ground';
+| 'electric'
+| 'ground'
+| 'dark'
+| 'dragon'
+| 'fairy'
+| 'fighting'
+| 'ghost'
+| 'ice'
+| 'psychic'
+| 'rock'
+| 'steel';
 
 
 type PokemonTypes = {
